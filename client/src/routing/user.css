@@ -1,0 +1,46 @@
+.logo{
+    height: 80px;
+    display: block;
+    width: 80px;
+    background-color: blanchedalmond;
+    margin-bottom: 15px;
+    margin-top: 0px;
+    background:url("../images/logowhite.png") no-repeat ;
+    background-size: contain;
+}
+.form:hover{
+    box-shadow: 0px 0px 50px 1px rgb(129, 203, 111);
+}
+.form{
+    box-shadow: 0px 0px 50px 1px rgb(181, 209, 105);
+    padding: 80px;
+    margin: auto;
+    border-radius: 25px;
+    border:2px solid black;
+    margin-top: 100px;
+    width: 800px;
+    height: 45em;
+    background:rgba(84, 50, 36, 0.7);
+    overflow: hidden;
+}
+body{
+    background: rgb(116, 186, 209) url("../images/login.jpg") no-repeat fixed center;
+    /* background: rgb(116, 186, 209) url("../images/regis.jpg") no-repeat fixed center; */
+    background-size: cover;
+}
+label,.form-group{
+    font-size: 20px;
+}
+#emailHelp{
+    color: rgb(234, 244, 126)!important;
+}
+.form1{
+    color: rgb(234, 244, 126);
+}
+.joblogo img{
+    position: absolute;
+    width: 160px;
+    height:160px;
+    top:80px;
+    right:80px;
+}
