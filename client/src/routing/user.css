@@ -1,0 +1,175 @@
+/* .logo{
+    height: 80px;
+    display: block;
+    width: 80px;
+    background-color: blanchedalmond;
+    margin-bottom: 15px;
+    margin-top: 0px;
+    background:url("../images/logowhite.png") no-repeat ;
+    background-size: contain;
+} */
+.form:hover{
+    box-shadow: 0px 0px 50px 1px rgb(129, 203, 111);
+}
+.form{
+    box-shadow: 0px 0px 50px 1px rgb(181, 209, 105);
+    padding: 80px;
+    margin: auto;
+    border-radius: 25px;
+    border:2px solid black;
+    margin-top: 100px;
+    width: 800px;
+    height: 45em;
+    background:rgba(84, 50, 36, 0.7);
+    overflow: hidden;
+}
+body{
+    background: rgb(116, 186, 209) url("../images/login.jpg") no-repeat fixed center;
+    /* background: rgb(116, 186, 209) url("../images/regis.jpg") no-repeat fixed center; */
+    background-size: cover;
+}
+label,.form-group{
+    font-size: 20px;
+}
+#emailHelp{
+    color: rgb(234, 244, 126)!important;
+}
+.form1{
+    color: rgb(234, 244, 126);
+}
+.joblogo img{
+    position: absolute;
+    width: 160px;
+    height:160px;
+    top:80px;
+    right:80px;
+}
+#btn{
+    margin-top: 30px;
+    margin-left: 90%;
+    margin-right:30px;
+}
+/* job edit css */
+.disp{
+    display: none;
+}
+
+/* job failed class css */
+.failed{
+    background-color: aqua;
+    height: 300px;
+    width: 500px;
+    padding: 80px;
+    margin: auto;
+    margin-top: 25px;
+    border-radius: 25px;
+    text-align: center;
+    animation-name: fail;
+    animation-duration: 1s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+@keyframes fail {
+    0%{
+        color: tomato;
+        box-shadow: 0px 0px 0px 0px ;
+    }
+    100%{
+        color: red;
+        box-shadow: 0px 0px 10px 10px rgb(234, 226, 226);
+
+    }
+    
+}
+/* files upload page */
+#file {
+    /* border: 2px solid rgb(86, 178, 201);
+    background-color: aqua;
+    padding: 30px;
+    margin:auto; */
+    font-size: 20px;
+    display: none;
+}
+.files{
+    display:inline-block;
+    width: 500px;
+    height: 300px;
+    margin: 250px;
+    margin-top: 50px;
+    align-items: center;
+    background-color: black;
+    border: 2px solid white;
+    border-radius: 35px;
+    opacity: 0.9;
+    color: white;
+    justify-content: center;
+}
+.files:hover{
+    background-color: white;
+    border: 2px solid rgb(97, 188, 97);
+    color: black;
+    opacity: 0.9;
+    box-shadow: 0px 0px 15px 10px rgb(97,188,97);
+}
+#lbl:hover{
+    background-color: rgb(97,188,97);
+    color: white;
+    cursor:pointer;
+}
+#lbl{
+    font-size: 20px;
+    border-radius:30px;
+    padding: 15px;
+    width: 260px;
+    margin-left:10%;
+    margin-top: 25%;
+    border: 1px solid white;
+    background-color: black;
+    color: white;
+}
+#upldbtn{
+    padding: 15px;
+    margin-left: 25px;
+}
+
+
+/* G_FB_login cs */
+.G_FB_login{
+    display: flex;
+    align-items: center;
+    justify-content: left;
+}
+
+.glogin{
+    margin: 10px;
+}
+.fblogin{
+    margin: 25px;
+    font-size: 25px;
+    margin-bottom: 50px;
+}
+#fbbtn{
+    font-size: 16px;
+    padding: 7px;
+    border-radius: 5px;
+}
+
+#editdiv{
+    margin: auto;
+    margin-top:100px;
+    width: 500px;
+    height: 450px;
+    overflow: auto;
+    padding: 50px;
+    background-color: aliceblue;
+}
+#editbtn1,#editbtn2,#editbtn3{
+margin: 10px;
+}
+.disp{
+    display: none;
+}
+#editaddbtn{
+    margin-left: 10px;
+    margin-right: 10px;
+}
