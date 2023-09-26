@@ -15,16 +15,33 @@
 .navbar{
     position: sticky;
     z-index: 1;
-    height: 100px;
+    height: auto;
     /* overflow: hidden; */
 }
-.rightbar{
+div ul li:hover{
+  cursor: pointer;
+  transform: scale(1.0009);
+  text-align: center;
+  width: auto;
+  margin: auto;
+}
+div .rightbar{
     list-style-type: none;
     display: flex;
-    padding: 5px;
-    margin-right: 50px;
-}
+    flex-wrap: wrap;
+    justify-content: space-around;
+    /* padding: px; */
+    margin-right: 5px;
+    overflow: hidden;
+    /* background-color: green; */
+  }
 
+  #Adminrightbar{
+    /* margin: 250px; */
+  /* justify-content: space-evenly; */
+  margin-left: 350px;
+
+}
 /* home page middle design */
 #divimg,.middlehome div,.imageclass div,div{
     padding: 0;
@@ -144,6 +161,11 @@
         right: 10%;
         margin-top: 120px;
 }
+.container-fluid{
+  overflow: hidden;
+  padding: 0px;
+  margin: 0px;
+}
 .foot img{
     overflow: hidden;
   width: 450px;
@@ -192,4 +214,79 @@
         margin-right: 50%;
         width: 300px;
 }
+/* notification css user */
+.noti{
+  cursor: pointer;
+  margin: 0px 30px 15px 20px;
+}
+.noti:hover{
+  animation:effect 0.2s 3 ;
+}
+@keyframes effect {
+  0% {
+      transform: translateX(0px) rotate(0deg);
+  }
 
+  20% {
+      transform: translateX(-4px) rotate(-4deg);
+  }
+
+  40% {
+      transform: translateX(-2px) rotate(-2deg);
+  }
+
+  60% {
+      transform: translateX(4px) rotate(4deg);
+  }
+
+  80% {
+      transform: translateX(2px) rotate(2deg);
+  }
+
+  100% {
+      transform: translateX(0px) rotate(0deg);
+  }
+}
+
+
+/* noti display css */
+.contentbtn{
+  position: absolute;
+  right:80px;
+  padding-bottom: 5px;
+  margin:-50px -120px 0px 0px;
+  border-radius: 10px;
+  background-color:rgb(102, 183, 102);
+}
+.contentbtn:hover{
+  background-color: rgb(233, 114, 114);
+  box-shadow: 0px 0px 15px 3px rgb(233, 114, 114);
+}
+#display{
+  font-size: 25px;
+}
+.disp{
+  display: none;
+}
+.notification {
+  position: absolute;
+  color:black;
+  top:0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background-color: rgba(0,0,0, 0.4);
+opacity: 1;
+z-index: 10;
+height: 100%;
+width: 100%
+}
+.noticontent{
+  position: absolute;
+  top: 80px;
+  background-color: rgb(250, 249, 249);
+  height: 80vh;
+  width: 80vw;
+  margin: auto;
+}

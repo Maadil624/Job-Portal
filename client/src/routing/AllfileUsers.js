@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Swal from 'sweetalert2'
 import { useNavigate } from 'react-router';
 import './user.css'
+import NavafterLogin from './NavafterLogin.js';
 export default function AllfileUsers() {
   // All file displaying state variables
   let [users, setusers] = useState();
@@ -90,6 +91,8 @@ export default function AllfileUsers() {
         )
       })
     ]).then(() => {
+      let maindiv = document.getElementById('display');
+    maindiv.classList.remove('disp')
     });
   }
   async function handleedit(id, name, index, file) {
@@ -151,7 +154,8 @@ export default function AllfileUsers() {
   // console.log(deletedata)
   const handleeditdelete = async () => {
     handledeleteuser(deletedata[0], deletedata[1], deletedata[2])
-    window.location.reload()
+    // window.location.reload()
+    seteditactive(false)
   }
   const handlereset = (field) => {
     // field.forEach(data=>{
@@ -165,7 +169,7 @@ export default function AllfileUsers() {
     )
   }
   let url = 'http://localhost:5000/fileusers'
-  let fetchApi = async () => {
+  let fetchApi = async () => {    
     try {
       await fetch(url,{
         method:'get',
@@ -185,11 +189,14 @@ export default function AllfileUsers() {
           if (filedata.length == 0) {
             setfilename(flname => [...flname, element.name])
             setfiledata((oldvalues) => [...oldvalues, filedetails])
+            // setfiledata( filedetails)
+            console.log("at 188",filedata)
             setlen((len) => [...len, element.data.length])
           }
           // console.log(element.length)
         });
         setusers(data.fileusers)
+        
       })
     } catch (err) {
       console.log(err)
@@ -197,14 +204,15 @@ export default function AllfileUsers() {
   }
   useEffect(() => {
     fetchApi();
-    // console.log(filedata)
-    // console.log(users)
+    console.log(filedata)
+    console.log(users)
     // console.log(len)
     // console.log(field)
   }, [])
   return (
     <>
-      {(users) ? <div class="card m-5 mb-3" id='display' style={{ Height: "100%" }}>
+    <NavafterLogin/>
+      {(users&&users.length>0) ? <div class="card m-5 mb-3" id='display' style={{ Height: "100%" }}>
         <div className='d-flex flex-wrap' id="main" >
           {
             filedata.map((filedata, id) => {
@@ -213,8 +221,9 @@ export default function AllfileUsers() {
                 <>
                   <div style={{ width: '100%', margin: '15px', padding: '25px', textAlign: 'center' }}>
                     <h1>{(users) ? <>File Name - {filename[id]}</> : ''}</h1><br />
+                    {console.log(users[id])}
                     <button type="button" class="btn btn-danger" onClick={() => handledelete(users[id]._id)}>Delete File</button>
-                    <button type="button" class="btn btn-primary" id='editaddbtn' onClick={() => handledelete(users[id]._id)}>Add Data</button>
+                    <button type="button" class="btn btn-primary" id='editaddbtn' onClick={() => Swal('Added','Implementation is still pending')}>Add Data</button>
                   </div>
                   {
                     filedata.map((file, index) => {
@@ -258,7 +267,7 @@ export default function AllfileUsers() {
         </div>
       </div>
         : <div style={{
-          margin: "30%",
+          margin: "20%",
           color: "white",
           backgroundColor: "red",
           height: '20vh',
@@ -288,8 +297,20 @@ export default function AllfileUsers() {
               </div> : 'no data'
             }
           </>
-          :
-          <div id='notactivediv'>not active</div>
+          :<>{!users||!len&&
+            <div style={{
+              margin: "20%",
+              color: "white",
+              backgroundColor: "red",
+              height: '30vh',
+              textAlign: 'center'
+            }}>
+            <h1>No users to display</h1>
+            <button className='btn btn-primary'
+            onClick={()=>navigate('/fileupload')}>file upload</button>
+          </div>
+          }
+      </>
       }
     </>
   )

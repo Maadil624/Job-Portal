@@ -43,8 +43,8 @@ function GLogin() {
           */
           
           setdata(jdecode(credentialResponse.credential))
-          console.log(jdecode(credentialResponse.credential).email);
-          console.log(jdecode(credentialResponse.credential).name)
+          console.log(jdecode(credentialResponse.credential));
+          // console.log(jdecode(credentialResponse.credential).name)
           gsubmit(jdecode(credentialResponse.credential).email,jdecode(credentialResponse.credential).name);
           Swal.fire(
             'Login Successful',

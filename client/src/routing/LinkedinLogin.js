@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
 
-import { LinkedIn } from 'react-linkedin-login-oauth2';
-// You can use provided image shipped by this package or using your own
-import linkedin from 'react-linkedin-login-oauth2/assets/linkedin.png';
-
+import React, { useState } from 'react'
+import img from '../images/Sign-in-Large---Active.png'
+// import { LinkedIn } from 'react-linkedin-login-oauth2';
+// // You can use provided image shipped by this package or using your own
+import LinkedIn from 'react-linkedin-login-oauth2/assets/linkedin.png';
 function LinkedInPage() {
   return (
     <LinkedIn
@@ -16,14 +16,11 @@ function LinkedInPage() {
         console.log(error);
       }}
     >
-      {({ linkedInLogin }) => (
-        <img
-          onClick={linkedInLogin}
-          src={linkedin}
-          alt="Sign in with Linked In"
-          style={{ maxWidth: '180px', cursor: 'pointer' }}
-        />
-      )}
+      {/* {({ linkedInLogin }) => ( */}
+       <a href='http://localhost:5000/auth/linkedin' >
+       <img src={img}/>
+       </a> 
+    {/* //   )} */}
     </LinkedIn>
   );
 }

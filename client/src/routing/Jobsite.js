@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from 'react-router'
 import Swal from "sweetalert2"
 import io from 'socket.io-client';
 import { Link } from 'react-router-dom';
+import NavafterLogin from './NavafterLogin';
 
 export default function Jobsite() {
   const loc = useLocation();
@@ -99,10 +100,10 @@ export default function Jobsite() {
     // console.log(edit)
   }
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      handlelogout()
-    }, 60000);
-  sessionStorage.setItem('timeoutid',timeout)
+    // const timeout = setTimeout(() => {
+    //   handlelogout()
+    // }, 60000);
+  // sessionStorage.setItem('timeoutid',timeout)
     // console.log("rendering time",jobupdt)
     setactive(true);
     sessionStorage.setItem("loginpage", false)
@@ -123,10 +124,12 @@ export default function Jobsite() {
     };
   }, [jobupdt,id])
   return (
-    <>{(sucess&&sessionStorage.getItem('active'))
+    <>
+    <NavafterLogin/>
+    {(sucess&&sessionStorage.getItem('active'))
       ?
       <div className='maindiv'>
-        <button type="button" className="btn btn-danger btn-lg" id='btn' onClick={handleSubmit}>Logout</button>
+        {/* <button type="button" className="btn btn-danger btn-lg" id='btn' onClick={handleSubmit}>Logout</button> */}
         <div class="card m-5 mb-3" style={{ maxHeight: "700px" }}>
           <div class="row no-gutters">
             <div class="col-md-4">
@@ -171,12 +174,12 @@ export default function Jobsite() {
       :
       <div>
       {
-      (totaljobs==0)
+      (!totaljobs)
       ?
       <div className='failed'>
         <h1>please login first</h1>
         <button type="button" class="btn btn-danger btn-lg" >
-          <Link to="/register" style={{ "textDecoration": "none", "listStyle": "none", "color": "white" }}>Login
+          <Link to="/login" style={{ "textDecoration": "none", "listStyle": "none", "color": "white" }}>Login
           </Link></button>
       </div>
         :      

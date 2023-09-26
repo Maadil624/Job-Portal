@@ -1,6 +1,12 @@
 import React, { useState } from 'react'
-
+import NavafterLogin from './NavafterLogin.js'
+import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router';
 export default function CreateJobs() {
+    let navigate=useNavigate()
+    const [company, setcompany] = useState("")
+    const [position, setposition] = useState("")
+    const [msg, setmsg] = useState("")
     function handleSubmit(e) {
         e.preventDefault();
         let url = "http://localhost:5000/createjob";
@@ -11,20 +17,36 @@ export default function CreateJobs() {
                 position
             }),
             headers: {
+                'x-access-token':sessionStorage.getItem('token'),
                 "Content-type": "application/json; charset=UTF-8"
             }
         }).then(response => response.json())
-            .then(json =>
-                // setmsg(json.message));
-                console.log("data", json));
-        alert("hello...", msg);
-        setcompany('')
-        setposition('')
+            .then((data) =>{
+console.log(data)
+                Swal.fire(
+                    `${data.message}`,
+                    `${data.message.includes('jwt expired') ?
+                     'redirecting to login' : (data.message)?
+                     data.message : data.message}`,
+                    `${data.message.includes('created') ? 'success' : 'error'}`
+                  ).then(() => {
+                    // alert(value)
+                    if(data.message.includes('sucess')){
+                        setposition('')
+                        setcompany('')
+                    }
+                    if (data.message.includes('jwt expired')) {
+                      navigate('/login')
+                    }
+                  })
+
+                setmsg(data.message)
+            })
     }
-    const [company, setcompany] = useState("")
-    const [position, setposition] = useState("")
-    const [msg, setmsg] = useState("")
+    
     return (
+    <>
+    <NavafterLogin/>
         <div className='form'>
             <div class='form1'>
                 <form onSubmit={handleSubmit} >
@@ -45,5 +67,6 @@ export default function CreateJobs() {
                 </form>
             </div>
         </div>
+        </>
     )
 }

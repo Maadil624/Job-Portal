@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom"
 import Swal from "sweetalert2"
 import GLogin from './GLogin';
 import FbLogin from './FbLogin';
+import Nav from './Nav.js'
 import img from '../images/Sign-in-Large---Active.png'
 // import LinkedInPage from './LinkedinLogin';
 
@@ -12,7 +13,6 @@ import img from '../images/Sign-in-Large---Active.png'
 
 export default function Login() {
   const navigate = useNavigate();
-
   function handleSubmit(e) {
     e.preventDefault();
     let url = "http://localhost:5000/login"
@@ -29,27 +29,36 @@ export default function Login() {
     }).then(response => response.json())
       .then(async (data) => {
         setalt(true);
+        try{
+          if(data.role.includes('Admin')){
+            console.log(data.role)
+            sessionStorage.setItem('Admin',data.pass.email+","+data.pass.name+','+data.role)
+          }
+          if(data.role.includes('user')){
+            sessionStorage.setItem('user',data.pass.email+","+data.pass.name+','+data.role)
+          }
+        }catch(err){
+          console.log(err)
+        }
         setmsg(data.message);
         settkn(data.token);
+        setrole(data.role)
+        document.cookie = `role=${data.role}; max-age=60*60*1`;
         console.log(msg);
         console.log("data", data);
       });
   }
-  const [email, setemail] = useState("")
-  const [pass, setpass] = useState("")
+  const [email, setemail] = useState()
+  const [pass, setpass] = useState()
   const [msg, setmsg] = useState("")
   const [alt, setalt] = useState(false)
   const [chk, setchk] = useState(false)
   const [active, setactive] = useState(true)
   const [tkn, settkn] = useState()
+  const [role, setrole] = useState()
 
 
   useEffect(() => {
-    // setTimeout(() => {
-    //   // alert('hello')
-    //   sessionStorage.removeItem('token')
-    //   sessionStorage.removeItem('sucess')
-    // }, 10000);
     clearTimeout(sessionStorage.getItem('timeoutid'))
     if (active) {
       setactive(sessionStorage.getItem('active'))
@@ -61,7 +70,7 @@ export default function Login() {
       let jobsitepageactive = sessionStorage.getItem("jobsitepage")
       // console.log(!!jobsitepageactive)
       if (!!jobsitepageactive) {
-        sessionStorage.setItem('active',false)
+        sessionStorage.setItem('active', false)
         sessionStorage.removeItem('token')
       }
       sessionStorage.removeItem('sucess')
@@ -73,8 +82,8 @@ export default function Login() {
       sessionStorage.setItem("token", tkn)
       sessionStorage.setItem("sucess", true)
       if (chk) {
-        sessionStorage.setItem("email", email)
         sessionStorage.setItem("chk", chk)
+        sessionStorage.setItem("email", email)
         sessionStorage.setItem("pass", pass)
         Swal.fire({
           position: "center",
@@ -82,23 +91,25 @@ export default function Login() {
           timer: 3000,
           icon: 'success'
         }).then(() => {
-          if (tkn) {
+          console.log('object')
+          if (tkn&&role.includes('user')) {
             navigate('/fileupload')
+          }
+          if(tkn&&role.includes('Admin')){
+            navigate('/Admin')
           }
         })
         if (active) {
           sessionStorage.setItem("active", true)
-          setemail(sessionStorage.getItem('email'))
-          setpass(sessionStorage.getItem('pass'))
+          // setemail(sessionStorage.getItem('email'))
+          // setpass(sessionStorage.getItem('pass'))
         }
       }
       sessionStorage.setItem("active", true)
-      if (chk == false) {
+      if (!chk) {
         sessionStorage.removeItem("email", email)
         sessionStorage.removeItem("pass", pass)
-        setemail(sessionStorage.removeItem(email))
-        setpass(sessionStorage.removeItem(pass))
-        sessionStorage.removeItem("token", tkn)
+        // sessionStorage.removeItem("token", tkn)
       }
       Swal.fire({
         position: "center",
@@ -106,8 +117,12 @@ export default function Login() {
         timer: 3000,
         icon: 'success'
       }).then(() => {
-        if (tkn) {
+        console.log(tkn&&role.includes('user'))
+        if (tkn&&role.includes('user')) {
           navigate('/fileupload')
+        }
+        else if(tkn&&role.includes('Admin')){
+          navigate('/Admin')
         }
         else {
           navigate('/login')
@@ -116,8 +131,8 @@ export default function Login() {
     }
     else {
       if (chk) {
-        setemail(sessionStorage.getItem('email'))
-        setpass(sessionStorage.getItem('pass'))
+        setemail(email)
+        setpass(pass)
         Swal.fire({
           position: "center",
           title: `${msg}`,
@@ -138,7 +153,9 @@ export default function Login() {
     }
     setalt(false)
   }
-  return (
+  // console.log(role)
+  return (<>
+    <Nav />
     <div className='form'>
       <form onSubmit={handleSubmit} >
         <div class='form1'>
@@ -158,24 +175,25 @@ export default function Login() {
             <input type="checkbox" class="form-check-input" value={chk} id="exampleCheck1" onChange={(e) => { setchk(e.target.checked) }} />
             <label class="form-check-label" for="exampleCheck1">Remember me</label>
           </div><br />
-          <button type="submit" class="btn btn-success btn-lg" >Submit</button>
-          <b><hr></hr></b>
-          <h6>Don`t Have an account ?</h6>
-          <button type="button" class="btn btn-danger btn-lg" >
-          <Link to="/register" style={{ "textDecoration": "none", "listStyle": "none", "color": "white" }}>Register Here
-          </Link></button>
+          <button type="submit" class="btn btn-success btn-lg LRbtns" >Submit</button>
+          {/* <b><hr></hr></b> */}
+          {/* <h6>Don`t Have an account ?</h6> */}
+          <button type="button" class="btn btn-danger btn-lg LRbtns" >
+            <Link to="/register" style={{ "textDecoration": "none", "listStyle": "none", "color": "white" }}>Register Here
+            </Link></button>
         </div>
         <b><hr></hr></b>
-        <br/>
-          <div class="g-signin2" data-onsuccess="onSignIn" className='G_FB_login' >
-           <GLogin/>
-           <FbLogin/>
-           {/* <LinkedInPage/> */}
-          <a href='http://localhost:5000/auth/linkedin' >
-            <img src={img}/>
-            </a>
-          </div>
+        <br />
+        <div class="g-signin2" data-onsuccess="onSignIn" className='G_FB_login' >
+          <GLogin />
+          {/* <LinkedInPage/> */}
+        </div>
+        <FbLogin /><br />
+        <a href='http://localhost:5000/auth/linkedin' >
+          <img src={img} />
+        </a>
       </form>
     </div>
+  </>
   )
 }
