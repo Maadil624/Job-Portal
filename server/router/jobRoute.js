@@ -8,8 +8,8 @@ const jobRoute = express.Router()
 // route.get('/',(req,res)=>{res.json("api..z..");})
 
 // job creation and getting all jobs
-jobRoute.post('/createjob', jobController)
-jobRoute.get('/alljob',verifyUser, allJobs)
+jobRoute.post('/createjob', verifyUser,jobController)
+jobRoute.get('/alljob',allJobs)
 
 // job updates and delete the jobs
 

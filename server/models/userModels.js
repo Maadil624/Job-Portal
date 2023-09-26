@@ -19,6 +19,10 @@ const userModel = new mongoose.Schema({
     mobile: {
         type: String,
         // required:true
+    },
+    role:{
+        type:String,
+        default:"user"
     }
 })
 /* export using the syntax 

@@ -2,9 +2,11 @@ import express from 'express'
 import userController from '../controller/userController.js'
 import { allUsers, loginController, verifyUser } from '../controller/loginController.js'
 import multer from 'multer';
-import { fileUpload, filefetch,deleteuser, deletedata, deletefile, updatefiledata } from '../controller/FileUploadController.js'
-import passport from '../controller/FBcontroller.js'
+import { fileUpload, filefetch, deleteuser, deletedata, deletefile, updatefiledata, userrequest, adminrequest, admindelreq } from '../controller/FileUploadController.js'
 import GuserController from '../controller/GuserController.js'
+import passport from 'passport';
+
+import { authurl, callbackurl, linkedinrresponce, lnklogout } from '../controller/LinkdenController.js';
 // initilize express with pre defined method router for routing
 const route = express.Router()
 
@@ -30,9 +32,13 @@ const fileFilter = (req, file, cb) => {
     file.mimetype === "application/csv" ||
     file.mimetype === "text/csv" ||
     file.mimetype === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
-    file.mimetype === "application/x-msexcel"
+    file.mimetype === "application/x-msexcel"||
+    file.mimetype === "application/pdf"||
+    file.mimetype === "application/doc"||
+    file.mimetype === "application/msword"||
+    file.mimetype === "application/vnd.openxmlformats-officedocument.wordprocessingml.document"||
+    file.mimetype === "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
   ) {
-    // console.log(papa.parse(file))
     cb(null, true);
   } else {
     try {
@@ -46,64 +52,67 @@ const fileFilter = (req, file, cb) => {
 const upload = multer({
   storage: storage,
   limits: {
-    fileSize: 30 * 1024,
+    fileSize: 5 * 1000 * 1024 ,//1024 is 1kb
     files: 3
   },
   fileFilter: fileFilter
 });
 
 // Attach the upload middleware to the route that handles the file upload
-route.route('/fileupload').post(verifyUser,upload.any('file'), fileUpload)
-
-route.get('/fileusers',verifyUser,filefetch)
+route.route('/fileupload').post(verifyUser, upload.any('file'), fileUpload)
+route.get('/fileusers', verifyUser, filefetch)
+route.get('/adminrequest', verifyUser, adminrequest)
+route.delete('/adminreqdel/:id',admindelreq)
 route.post('/getdeletedata', deletedata)
 route.delete('/deletefileuser/:id', deleteuser)
 route.delete('/deletefile/:id', deletefile)
-route.put('/updatefiledata/:id',updatefiledata)
+route.put('/updatefiledata/:id', updatefiledata)
 
 // user Routes
 route.post('/register', userController)
 route.post('/login', loginController)
 route.route('/allusers').get(verifyUser, allUsers)
+route.route('/usersrequest').post(userrequest)
 
 // Social Media Login Routes
-
 // facebook and google auth routes
 route.get('/facebook', passport.authenticate('facebook'));
 route.get('/facebook/callback', passport.authenticate('facebook',
   {
-    failureRedirect: `http://localhost:5000/profile`
-    ,
+    //   failureRedirect: `http://localhost:5000/profile`
+    //   ,
     successRedirect: 'http://localhost:3000/alljob'
-  }), (req, res) => {
-    res.status(200).send({
-      success: true,
-      message: "login sucessfull"
-    });
-    //   console.log(res)
-  });
+  }
+), function (req, res) {
+  console.log(req.user)
+  let user = req.user
+  res.status(200).send({
+    success: true,
+    message: "login sucessfull",
+    user
+  }).then(() => {
+    redirect('http://localhost:3000/alljob')
+  })
+  // res.redirect('http://localhost:3000/alljob')
+  //   console.log(res)
+});
 
-// linkdden routes
 
 route.get('/', function (req, res) {
   res.render('index.ejs', {
     user: req.user
   }); // load the index.ejs file
 });
+// linkdden routes
+// List of scopes separated by spaces
 
-route.get('/auth/linkedin', passport.authenticate('linkedin', {
-  scope: ['openid', 'email'],
-}));
-
-route.get('/auth/linkedin/callback',
-  passport.authenticate('linkedin', {
-    successRedirect: '/',
-    failureRedirect: '/login'
-  }));
+route.get('/auth/linkedin', authurl);
+route.get('/auth/linkedin/callback', callbackurl);
+route.get('/linkedin', linkedinrresponce)
+route.get('/logout', lnklogout)
 
 // google auth routes
 route.route('/glogin').post(GuserController)
-
 
 
 export default route

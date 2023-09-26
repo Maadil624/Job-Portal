@@ -15,7 +15,7 @@ export const jobController = async (req, res) => {
                 message: "please provide job and company createjob"
             })
         }
-        const extjob = await jobModel.findOne({ company, position })
+        const extjob = await jobModel.findOne({ company:company,position:position})
         if (extjob) {
             return res.status(200).send({
                 sucess: true,
@@ -26,7 +26,9 @@ export const jobController = async (req, res) => {
             company,
             position
         }
-        const job = await jobModel.create(newjob)
+        if(!extjob){
+            const job = await jobModel.create(newjob)
+        }
         io.on("connection", async (socket) => {
             console.log("user connected....")
             await socket.emit("created_job", (data) => {
